@@ -1,0 +1,3 @@
+%__qml_provides  %{_rpmconfigdir}/qmldeps.sh --provides
+%__qml_requires  %{_rpmconfigdir}/qmldeps.sh --requires
+%__qml_path      .*/qmldir$|.*\.qml$
