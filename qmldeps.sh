@@ -18,6 +18,11 @@
 # included in the package. A package using a module should require the module
 # in a version >= the one used for the import.
 
+# grep blows up with C/POSIX locale, so make sure we're using a working locale
+if [ -z "$LANG" ] || [ "$LANG" = "C" ] || [ "$LANG" = "POSIX" ] ; then
+    export LANG=en_US.UTF-8
+fi
+
 case $1 in
     --provides)
         while read file; do
