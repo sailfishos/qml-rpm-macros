@@ -60,15 +60,15 @@ case $1 in
                     IFS=$'\n'
                     imports=`grep -i -E -o '^\s*import\s+[a-z0-9.]*\s+[0-9.]*' ${file} | sed -r -e 's/^\s*import\s*//' | sort | uniq`
                     if [ -z "$imports" ]; then
-                        echo "qmldeps: no imports found. Probably should not happen." >&2
+                        echo "qmldeps: no imports found in $file. Probably should not happen." >&2
                     fi
                     for i in $imports; do
                         import=`echo $i | awk '{ print $1 }'`
                         import_version=`echo $i | awk '{ print $2 }'`
                         if [ $import = "$module" ]; then
-                            echo "qmldeps: skipping provide for own module '$module'" >&2
+                            echo "qmldeps: skipping provide for own module '$module' in $file" >&2
                         elif echo $import | grep -q '\.private$'; then
-                            echo "qmldeps: skipping private import '$import'" >&2
+                            echo "qmldeps: skipping private import '$import' in $file" >&2
                         else
                             # remove the >&2 to enable provides generation as well
                             echo "qml($import) >= $import_version" >&2
