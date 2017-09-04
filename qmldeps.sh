@@ -18,11 +18,6 @@
 # included in the package. A package using a module should require the module
 # in a version >= the one used for the import.
 
-# grep blows up with C/POSIX locale, so make sure we're using a working locale
-if [ -z "$LANG" ] || [ "$LANG" = "C" ] || [ "$LANG" = "POSIX" ] ; then
-    export LANG=en_US.UTF-8
-fi
-
 case $1 in
     --provides)
         while read file; do
@@ -30,7 +25,8 @@ case $1 in
                 */qmldir)
                     if head -1 "$file" | grep -iq '^module\s*' 2>/dev/null; then
                         provides="`head -1 ${file} | sed -r 's/^module\s+//'`"
-                        version="`grep -i -E -o '^[a-z]*\s+[0-9.]*\s+[a-z0-9]*.qml' ${file} | awk '{print $2}' | sort -r | uniq | head -1`"
+                        version="`grep -i -E -o '^[a-z]*[[:space:]]+[0-9.]*[[:space:]]+[a-z0-9]*.qml' ${file} \
+                            | awk '{print $2}' | sort -r | uniq | head -1`"
                         if [ -z "$version" ]; then
                             echo "qmldeps: WARNING: no version number found, package version will be used." >&2
                             echo "qml($provides)"
@@ -58,7 +54,8 @@ case $1 in
                         module=`head -1 $qmldir_noprivate/qmldir | sed -r 's/^.*\s+//'`
                     fi
                     IFS=$'\n'
-                    imports=`grep -i -E -o '^\s*import\s+[a-z0-9.]*\s+[0-9.]*' ${file} | sed -r -e 's/^\s*import\s*//' | sort | uniq`
+                    imports=`grep -i -E -o '^[[:space:]]*import[[:space:]]+[a-z0-9.]*[[:space:]]+[0-9.]*' ${file} \
+                        | sed -r -e 's/^\s*import\s*//' | sort | uniq`
                     if [ -z "$imports" ]; then
                         echo "qmldeps: no imports found in $file. Probably should not happen." >&2
                     fi
