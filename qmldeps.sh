@@ -18,6 +18,8 @@
 # included in the package. A package using a module should require the module
 # in a version >= the one used for the import.
 
+debug() { [ -z "$MER_QMLDEPS_DEBUG" ] || echo "$*" >&2; }
+
 case $1 in
     --provides)
         while read file; do
@@ -63,12 +65,13 @@ case $1 in
                         import=`echo $i | awk '{ print $1 }'`
                         import_version=`echo $i | awk '{ print $2 }'`
                         if [ $import = "$module" ]; then
-                            echo "qmldeps: skipping provide for own module '$module' in $file" >&2
+                            debug "qmldeps: skipping require for own module '$module' in $file"
                         elif echo $import | grep -q '\.private$'; then
-                            echo "qmldeps: skipping private import '$import' in $file" >&2
+                            debug "qmldeps: skipping private import '$import' in $file"
                         else
-                            # remove the >&2 to enable provides generation as well
-                            echo "qml($import) >= $import_version" >&2
+                            # uncomment to enable requires generation as well
+                            #echo "qml($import) >= $import_version"
+                            debug "qmldeps: requires generation is disabled"
                         fi
                     done
                     ;;
