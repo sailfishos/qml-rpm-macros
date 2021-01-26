@@ -5,7 +5,7 @@ Summary: Macros for handling QML
 Group: System/Libraries
 License: GPLv2
 Source0: %{name}-%{version}.tar.gz
-
+BuildArch:  noarch
 
 %description
 %{summary}.
