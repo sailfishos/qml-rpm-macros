@@ -1,8 +1,7 @@
 Name: qml-rpm-macros
-Version: 0.0.1
+Version: 0.1.1
 Release: 1
 Summary: Macros for handling QML
-Group: System/Libraries
 License: GPLv2
 Source0: %{name}-%{version}.tar.gz
 BuildArch:  noarch
@@ -15,13 +14,10 @@ BuildArch:  noarch
 %{_rpmconfigdir}/fileattrs/qml.attr
 %{_rpmconfigdir}/qmldeps.sh
 
-
 %prep
 %setup -q
 
-
 %build
-
 
 %install
 install -m644 -D qml.attr %{buildroot}/%{_rpmconfigdir}/fileattrs/qml.attr
