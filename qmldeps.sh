@@ -25,8 +25,8 @@ case $1 in
         while read file; do
             case "$file" in
                 */qmldir)
-                    if head -1 "$file" | grep -iq '^module\s*' 2>/dev/null; then
-                        provides="`head -1 ${file} | sed -r 's/^module\s+//'`"
+                    if grep -iq '^module\s*' "$file" 2>/dev/null; then
+                        provides="`grep -i '^module\s*' $file | sed -r 's/^module\s+//' | head -1`"
                         version="`grep -i -E -o '^[a-z]*[[:space:]]+[0-9.]*[[:space:]]+[a-z0-9]*.qml' ${file} \
                             | awk '{print $2}' | sort -r | uniq | head -1`"
                         if [ -z "$version" ]; then
